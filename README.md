@@ -1,5 +1,5 @@
 <h1> Django </h1>
-<a href="#project">Project</a>
+<a href="#project">About</a>
 <br>
 <br>
 <br>
@@ -28,7 +28,7 @@
 <br>
 <br>
 <br>
-<section id="projects" class="project">
+<section id="project" class="project">
     <pre>
         {% if messages %}
         <div class="alert alert-primary" role="alert">
