@@ -2,25 +2,27 @@
 you can learn django with me 
 <a href="#about">About</a>
 
-/
-/
-/
-/
-/
-//
-/
-/
-/
-/
-//
-/
-/
-/
-//
-/
-/
-/
-#/
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 <section id="about" class="about">
         <div class="container">
