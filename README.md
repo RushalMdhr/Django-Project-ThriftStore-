@@ -1,6 +1,6 @@
 <h1>Django lessons</h1>
-you can learn django with me 
-<a href="#about">About</a>
+
+<a href="#about"><button style="color:red"> About </button></a>
 
 <br>
 <br>
