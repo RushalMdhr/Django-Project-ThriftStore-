@@ -28,7 +28,7 @@
 <br>
 <br>
 <br>
-<section class="project">
+<section id="projects" class="project">
     <pre>
         {% if messages %}
         <div class="alert alert-primary" role="alert">
