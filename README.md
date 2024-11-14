@@ -1,12 +1,14 @@
 <h1> Django </h1>
 <p>
+
 def register_page(request):
+
     if request.method=="POST":
         first_name = request.POST.get('first name')
         last_name = request.POST.get('last name')
         username = request.POST.get('username')
         password = request.POST.get('password')
-
+        
         user = User.objects.filter(username = username)
 
         if user.exists():
