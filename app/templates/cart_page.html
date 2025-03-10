@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block containt %}
+
+{% load mathfilters %}
+
+<style>
+  .cart-container {
+      width: 80%;
+      margin: 30px auto;
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 20px;
+      background-color: #f9f9f9;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .cart-title {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+  }
+
+  .cart-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+  }
+
+  .cart-table th, .cart-table td {
+      text-align: left;
+      padding: 15px;
+      border-bottom: 1px solid #ddd;
+  }
+
+  .cart-table th {
+      background-color: #f0e6d2;
+      color: #333;
+  }
+
+  .cart-table td img {
+      width: 100px;
+      border-radius: 10px;
+  }
+
+  .cart-summary {
+      text-align: right;
+      font-size: 1.2rem;
+      margin-top: 20px;
+  }
+
+  .cart-summary span {
+      font-weight: bold;
+      color: tomato;
+  }
+
+  .action-buttons {
+      text-align: center;
+      margin-top: 20px;
+  }
+
+  .action-buttons .btn {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      margin: 0 10px;
+  }
+</style>
+
+<div class="cart-container">
+  <!-- Title -->
+  <h1 class="cart-title">Your Cart [ {{user.username}} ]</h1>
+
+  <!-- Cart Table -->
+
+  <table class="cart-table">
+      <thead>
+          <tr>
+              <th>Product</th>
+              <th>Image</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+              <th>Actions</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for item in cart_products %}
+          <form class="profileForm" method="POST" action="{% url 'update_quantity' item.id %}">
+            {% csrf_token %}
+          <tr>
+              <td>{{ item.product.product_name }}</td>
+              <td>
+                <a href="{% url 'product_overview' item.product.id %}">
+                <img src="/media/{{item.product.product_image.first.image}}" alt="{{item.product.product_name}}" class="cart-item-img">
+                </a>
+              </td>
+              <td>
+                <form action="{% url 'update_cart' %}" method="post" class="d-inline ms-3" id="update-cart-form-{{ item.product.id }}">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{item.product.stock}}" class="form-control d-inline w-auto quantity-input" data-product-id="{{ item.product.id }}">
+                </form>
+              </td>
+              <td>Rs. {{ item.product.product_price }}</td>
+              
+              <td>Rs.  {{ item.quantity|mul:item.product.product_price }}</td>
+              <td>
+                <a href="{% url 'remove_from_group' 'cart' item.product.id %}" class="btn btn-danger">Remove</a>
+              </td>
+          </tr>
+        </form>
+          {% empty %}
+          <tr>
+              <td colspan="6" style="text-align: center; font-size: 1.5rem; color: #777;">Your cart is empty!</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+
+  <!-- Cart Summary -->
+  <div class="cart-summary">
+      <p>Total Price: <span>Rs. {{ total_price }}</span></p>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+      <a href="{% url 'checkout_page' 0 %}" class="btn btn-success">Proceed to Checkout</a>
+      <a href="/" class="btn btn-warning"><i class="fas fa-shopping-cart "></i> Continue Shopping</a>
+  </div>
+</div>
+
+
+<script>
+    document.querySelectorAll('.quantity-input').forEach(input => {
+    input.addEventListener('change', function() {
+        const form = this.closest('form');
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Optionally update the total price or other elements on the page
+                console.log('Cart updated successfully');
+            } else {
+                console.error('Failed to update cart');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
+</script>
+{% endblock containt %}
+

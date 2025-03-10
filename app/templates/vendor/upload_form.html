@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}
+UPLOAD 
+{% endblock title %}
+{% block containt %}
+<style>
+    #imagePreview {
+        max-width: 200px; /* Set the maximum width to 200px */
+        max-height: 200px; /* Set the maximum height to 200px */
+        object-fit: cover; /* Ensure the image maintains its aspect ratio without stretching */
+    }
+</style>
+<div class="container mt-5">
+    <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <legend>Upload Your Product</legend>
+            <hr>
+            
+                    
+            <div class="upload-container">
+                <div class="form-group">
+                    <label for="imageUpload" class="form-label">Upload Images</label>
+                    <input name="product_images" type="file" id="imageUpload" class="form-control" multiple accept="image/*" />
+                </div>
+            </div>
+            <div class="preview">
+                <h2>Image Previews:</h2>
+                <div id="imagePreviewContainer"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Name</label>
+                <input type="text" class="form-control" name="product_name"  placeholder="item_name" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Image Description</label>
+                <textarea class="form-control" required name="product_description"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Price</label>
+                <input type="number" class="form-control" name="product_price"  placeholder="Price" id="exampleInputEmail1" aria-describedby="emailHelp" min="1" max="999999">
+            </div>
+            <div class="mb-3">
+                <label for="exampleSelect1" class="form-label mt-4">select condition</label>
+                <select class="form-select" id="exampleSelect1" name="cond">
+                    <option value="1">New</option>
+                    <option value="2">Excelent</option>
+                    <option value="3">Good</option>
+                    <option value="4">Fair</option>
+                    <option value="5">Poor</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="exampleSelect1" class="form-label mt-4">Category</label>
+                <select class="form-select" id="exampleSelect1" name="categories">
+                    {% for x in categories %}
+                        <option value="{{x.category_name}}">-{{x.category_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-success">Add</button>
+        </div>
+        
+    </form>
+</div>
+
+
+<script>
+      document.getElementById('imageUpload').addEventListener('change', function(event) {
+        const previewContainer = document.getElementById('imagePreviewContainer');
+        previewContainer.innerHTML = ''; // Clear previous previews
+        const files = event.target.files;
+
+        for (let i = 0; i < files.length; i++) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.width = '100px';
+                img.style.margin = '5px';
+                previewContainer.appendChild(img);
+            };
+            reader.readAsDataURL(files[i]);
+        }
+    });
+</script>
+{% endblock containt %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}
+    About Us
+{% endblock title %}
+
+{% block containt %}
+<div class="container mt-5">
+    <!-- Page Heading -->
+    <div class="text-center mb-4">
+        <h1 class="fw-bold text-primary">About Us</h1>
+        <p class="text-muted">Discover our story and mission</p>
+    </div>
+
+    <!-- About Us Content -->
+    <div class="row">
+        <!-- Mission Section -->
+        <div class="col-md-6 mb-4">
+            <h3 class="fw-bold text-secondary">Our Mission</h3>
+            <p class="text-muted">
+                At Thrift, our mission is to connect people with affordable and sustainable fashion while encouraging a culture of reuse and upcycling. We aim to make a positive impact on the environment and society by promoting second-hand shopping as a lifestyle choice.
+            </p>
+        </div>
+
+        <!-- Vision Section -->
+        <div class="col-md-6 mb-4">
+            <h3 class="fw-bold text-secondary">Our Vision</h3>
+            <p class="text-muted">
+                We envision a future where everyone embraces sustainable living and appreciates the value of preloved items. Our goal is to build a vibrant community of fashion enthusiasts who care for the planet while staying stylish.
+            </p>
+        </div>
+    </div>
+
+    <!-- Team Section -->
+    <div class="mt-5">
+        <h3 class="fw-bold text-secondary text-center mb-4">Meet Our Team</h3>
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <img src="/media/static/images/team_1.png" style="width: 150px; height: 150px;object-fit: cover;" alt="Team Member" class="rounded-circle mb-3">
+                <h5 class="fw-bold">Mr. GPT</h5>
+                <p class="text-muted">The one who never takes a coffee break but still manages to know everything (almost).</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <img src="/media/static/images/IMG_4255.JPG" style="width: 150px; height: 150px;object-fit: cover;" alt="Team Member" class="rounded-circle mb-3">
+                <h5 class="fw-bold">Rushal Manandhar</h5>
+                <p class="text-muted">The visionary who does all the hard work while everyone else claims the credit</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <img src="/media/static/images/team_2.png" style="width: 150px; height: 150px;object-fit: cover;" alt="Team Member" class="rounded-circle mb-3">
+                <h5 class="fw-bold">Dr.Co-pilot</h5>
+                <p class="text-muted">The overachiever who writes code faster than you can blink—and sometimes gets it hilariously wrong.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock containt %}

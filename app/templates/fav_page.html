@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block containt %}
+
+<style>
+  .cart-container {
+      width: 80%;
+      margin: 30px auto;
+      padding: 20px;
+      border: 2px solid #ccc;
+      border-radius: 20px;
+      background-color: #f9f9f9;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .cart-title {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+  }
+
+  .cart-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+  }
+
+  .cart-table th, .cart-table td {
+      text-align: left;
+      padding: 15px;
+      border-bottom: 1px solid #ddd;
+  }
+
+  .cart-table th {
+      background-color: #f0e6d2;
+      color: #333;
+  }
+
+  .cart-table td img {
+      width: 100px;
+      border-radius: 10px;
+  }
+
+  .cart-summary {
+      text-align: right;
+      font-size: 1.2rem;
+      margin-top: 20px;
+  }
+
+  .cart-summary span {
+      font-weight: bold;
+      color: tomato;
+  }
+
+  .action-buttons {
+      text-align: center;
+      margin-top: 20px;
+  }
+
+  .action-buttons .btn {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      margin: 0 10px;
+  }
+</style>
+
+<div class="cart-container">
+  <!-- Title -->
+  <h1 class="cart-title">Your Favorites [ {{user.username}} ]</h1>
+
+  <!-- Cart Table -->
+  <table class="cart-table">
+      <thead>
+          <tr>
+              <th>Product</th>
+              <th>Image</th>
+              <th>Price</th>
+              <th>Actions</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for item in fav_products %}
+          <tr>
+              <td>{{ item.product_name }}</td>
+              <td>
+                <a href="{% url 'product_overview' item.id %}">
+                <img src="/media/{{item.product_image.first.image}}" alt="{{x.product_name}}" class="cart-item-img">
+                </a>
+              </td>
+              <td>Rs. {{ item.product_price }}</td>
+              <td>
+                <a href="{% url 'remove_from_group' 'favorite' item.id %}" class="btn btn-danger">Remove</a>
+              </td>
+          </tr>
+          {% empty %}
+          <tr>
+              <td colspan="6" style="text-align: center; font-size: 1.5rem; color: #777;">Your Wishlist is empty!</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+      <a href="/" class="btn btn-warning"><i class="fas fa-shopping-cart "></i>  Continue Shopping</a>
+  </div>
+</div>
+
+{% endblock containt %}
+
+
+
+{% for x in fav_products %}
+    <div class="cart-item">
+      <img src="/media/{{x.product_image}}" alt="{{x.product_name}}" style="width: 25%;" class="cart-item-img">
+      <div class="cart-item-details">
+        <h2 class="cart-item-name">{{x.product_name}}</h2>
+        <p class="cart-item-price">Rs. {{x.product_price}}</p>
+        <p class="cart-item-quantity">Quantity: <span>1</span></p>
+      </div>
+      <a href="{% url 'remove_from_cart' x.id %}"><button class="remove-btn">Remove</button></a>
+    </div>
+    {% endfor %}

@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{product.product_name}}
+{% endblock title %}
+
+{% block containt %}
+
+<style>
+.checked {
+  color: orange;
+}
+
+/* Existing styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.product-container {
+  display: flex;
+  padding: 20px;
+  max-width: 1200px;
+  gap: 20px;
+}
+
+.image-gallery {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+}
+
+#main-image {
+  width: 300px;
+  height: 400px;
+  object-fit: contain;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.thumbnail-container {
+  display: flex;
+  gap: 10px;
+}
+
+.thumbnail-container img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 1px solid #ddd;
+}
+
+.thumbnail-container img:hover {
+  border: 2px solid #007BFF;
+}
+
+.product-details {
+  flex: 1;
+}
+
+
+
+.price {
+  font-size: 20px;
+  color: green;
+  margin: 10px 0;
+}
+
+.rating {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.tags {
+  margin-bottom: 20px;
+}
+
+.tag {
+  display: inline-block;
+  background-color: gold;
+  color: white;
+  padding: 5px 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.description {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Popup styles */
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 700px;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.popup img {
+  width: 100%;
+  height: auto;
+}
+</style>
+
+<script>
+
+
+function changeImage(imageSrc) {
+  document.getElementById("main-image").src = imageSrc;
+}
+
+function openPopup(imageSrc) {
+  var popup = document.getElementById("image-popup");
+  var popupImg = document.getElementById("popup-img");
+  popup.style.display = "block";
+  popupImg.src = imageSrc;
+}
+
+function closePopup() {
+  var popup = document.getElementById("image-popup");
+  popup.style.display = "none";
+}
+</script>
+
+<div class="product-container">
+  <div class="image-gallery">
+    <img id="main-image" src="/media/{{product.product_image.first.image}}" alt="Product Image" onclick="openPopup(this.src)">
+    <div class="thumbnail-container">
+      {% for image in product.product_image.all %}
+      <img onclick="changeImage('/media/{{ image.image }}')" src="/media/{{ image.image }}" alt="{{ item.product_name }}">
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="product-details">
+    <div class="c">
+      <h1 class="text-danger">{{ product.product_name }}</h1>
+    </div>
+  
+    <p><strong>Condition:</strong> {{ product.get_product_rating_display }}</p>
+
+
+  <div class="rating" data-rating="{{ product.product_rating }}"></div>
+
+  <!-- Include Font Awesome for star icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  
+    <h3 style="text-align: left;" class="text-success">Rs. {{ product.product_price }}</h3>
+    <a href="{% url 'profile' product.created_by.id %}" style="text-decoration: none;"><p><strong>Seller:</strong> {{ product.created_by }}</p></a>
+    <div class="tags">
+      <span class="tag primary">Stock : {{product.stock}}</span>
+    </div>
+    <p class="card-text">{{ product.product_description }}</p>
+
+    <div class="action-buttons">
+      {% if request.user.is_authenticated %}
+      <form action="" method="post" style="display: inline;">
+        {% csrf_token %}
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        {% if product.created_by == request.user %}
+          <a href="{% url 'edit_product' product.id %}" class="btn btn-primary">Edit</a>
+        {% else %}
+        {% if not product.is_sold and product.stock > 0 %}
+        <a href="{% url 'checkout_page' product.id %}" type="submit" class="btn btn-danger">Buy Now</a>
+        <a href="{% url 'add_to_group' 'cart' product.id %}" class="btn btn-info">Add to Cart</a>
+        {% else %}
+        <p style="color: red; font-weight: bold;">SOLD OUT</p>
+        <p>Purchased on: {{purchased}}</p>
+        {% endif %}
+      </form>
+      <a href="{% url 'add_to_group' 'favorite' product.id %}" class="btn btn-success">Add To WishList</a>
+      {% endif %}
+      {% else %}
+      <p class="login" style="color: tomato;">Please <a href="{% url 'login_page' %}">login</a> to see seller details.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- The Popup -->
+<div id="image-popup" class="popup">
+  <div class="popup-content">
+    <span class="close" onclick="closePopup()">&times;</span>
+    <img id="popup-img" src="" alt="Popup Image">
+  </div>
+</div>
+
+
+{% include "products.html" %}
+
+{% endblock containt %}

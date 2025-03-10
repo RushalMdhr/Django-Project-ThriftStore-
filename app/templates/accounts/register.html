@@ -1,0 +1,101 @@
+{% extends 'base.html'%}
+{% block containt%}
+
+<div class="container mt-5">
+    <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2 style="text-align: center;">REGISTER</h2>
+        <hr>
+        
+        <!-- {% if messages %}
+        <div class="alert alert-primary" role="alert">
+            {% for message in messages %}
+            {{message}}
+            {% endfor %}
+        </div>
+        {% endif %} -->
+
+
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">First Name</label>
+            <input type="text" class="form-control" placeholder="first name" required name= "first name"id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Last Name</label>
+            <input type="text" class="form-control" placeholder="last name" required name="last name"id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div>
+          <label for="exampleInputEmail1" class="form-label mt-4">Email address</label>
+          <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">User Name</label>
+          <input type="text" class="form-control" placeholder="username  [must be unique]" required name="username" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <div class="input-group">
+            <input type="password" placeholder="Password" class="form-control" required name="password" id="exampleInputPassword1">
+            <span class="input-group-text" id="togglePassword" style="cursor: pointer;">
+              <i class="fas fa-eye" id="eyeIcon"></i>
+            </span>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputConfirmPassword1" class="form-label">Confirm Password</label>
+          <div class="input-group">
+            <input type="password" placeholder="Confirm Password" class="form-control" required name="confirmPassword" id="exampleInputConfirmPassword1">
+            <span class="input-group-text" id="toggleConfirmPassword" style="cursor: pointer;">
+              <i class="fas fa-eye" id="eyeIconConfirm"></i>
+            </span>
+          </div>
+        </div>
+        <div>
+            <a href="/login">Login</a> directly if already have an account
+            <hr>
+        </div>
+        <button type="submit" class="btn btn-primary" style="background-color: #78c2ad;">Submit</button>
+
+      </form>
+</div>
+
+<script>
+ // Toggle visibility for password field
+ document.getElementById("togglePassword").addEventListener("click", function() {
+    var passwordField = document.getElementById("exampleInputPassword1");
+    var eyeIcon = document.getElementById("eyeIcon");
+    
+    if (passwordField.type === "password") {
+      passwordField.type = "text";
+      eyeIcon.classList.remove("fa-eye");
+      eyeIcon.classList.add("fa-eye-slash");
+    } else {
+      passwordField.type = "password";
+      eyeIcon.classList.remove("fa-eye-slash");
+      eyeIcon.classList.add("fa-eye");
+    }
+  });
+
+  // Toggle visibility for confirm password field
+  document.getElementById("toggleConfirmPassword").addEventListener("click", function() {
+    var confirmPasswordField = document.getElementById("exampleInputConfirmPassword1");
+    var eyeIconConfirm = document.getElementById("eyeIconConfirm");
+    
+    if (confirmPasswordField.type === "password") {
+      confirmPasswordField.type = "text";
+      eyeIconConfirm.classList.remove("fa-eye");
+      eyeIconConfirm.classList.add("fa-eye-slash");
+    } else {
+      confirmPasswordField.type = "password";
+      eyeIconConfirm.classList.remove("fa-eye-slash");
+      eyeIconConfirm.classList.add("fa-eye");
+    }
+  });
+
+</script>
+
+
+{% endblock containt %}

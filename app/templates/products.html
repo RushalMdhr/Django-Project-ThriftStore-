@@ -1,0 +1,115 @@
+<style>
+    .checked {
+  color: orange;
+}
+</style>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+    const ratingDivs = document.querySelectorAll('.rating'); // Select all rating elements
+
+    ratingDivs.forEach((ratingDiv) => {
+      const rating = parseInt(ratingDiv.dataset.rating); // Get the rating for this specific product
+      const totalStars = 5; // Total number of stars
+
+      // Add filled stars
+      for (let i = 0; i < totalStars - rating +1; i++) {
+        const filledStar = document.createElement('span');
+        filledStar.className = 'fa fa-star checked';
+        ratingDiv.appendChild(filledStar);
+      }
+
+      // Add empty stars
+      for (let i = 0; i < rating-1; i++) {
+        const emptyStar = document.createElement('span');
+        emptyStar.className = 'fa fa-star';
+        ratingDiv.appendChild(emptyStar);
+      }
+    });
+  });
+
+    function add_to_cart(productId) {
+        fetch(`/add-to-cart/${productId}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}", // Include CSRF token for POST requests
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message); // Show success message
+            } else {
+                alert("Error: " + data.message);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+</script>
+
+
+<section id="products" class="products">
+    
+    <div class="pin_container" style="padding-left: 20px;">
+        {% if not image_details%}
+        <h1 style="text-align: center;">Sorry No Image Found</h1>
+        {% endif %}
+        {% for x in image_details %}    
+            <div class="card">
+                <a href="{% url 'product_overview' x.id %}">
+                    <img src="/media/{{x.product_image.first.image}}" alt="{{ x.product_name }}">
+                </a>
+                <h3>{{ x.product_name }}</h3>
+                <p>Rs.{{ x.product_price }}</p>
+                <p class="condition">Conditon : 
+                </p>
+                <div class="rating" data-rating="{{ x.product_rating }}"></div>
+
+                {% if x.stock == 0%}
+                    <h4 class="bg-secondary" style="border-radius: 10px;">SOLD</h4>
+                {% else %}
+                    {% if x.created_by == request.user %}
+                        <a href="{% url 'edit_product' x.id %}" class="btn btn-warning">Edit</a>
+                    {% else %}
+                        <a href="{% url 'add_to_group' 'cart' x.id %}" class="btn btn-info" >Add to Cart</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+  </section>
+  <div>
+    <ul class="pagination pagination-lg">
+    {% if image_details.has_previous %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ image_details.previous_page_number }}">&laquo;</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" href="#">&laquo;</a>
+    </li>
+    {% endif %}
+
+    {% with range_obj="12345" %}
+  {% for i in range_obj %}
+    <li class="page-item active">
+        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+    </li>
+    {% endfor %}
+    {% endwith %}
+
+    {% if image_details.has_next %}
+    <li class="page-item">
+        <a class="page-link" href="?page={{ image_details.next_page_number }}">&raquo;</a>
+    </li>
+    {% else %}
+    <li class="page-item disabled">
+        <a class="page-link" href="#">&raquo;</a>
+    </li>
+    {% endif %}
+    
+    </ul>
+  </div>

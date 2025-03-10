@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us{% endblock title %}
+
+{% block containt %}
+<div class="position-relative" style="min-height: 100vh;">
+  <!-- Background Image -->
+  <div class="position-absolute top-0 start-0 w-100 h-100" style="background-image: url('/static/images/contact-bg.jpg'); background-size: cover; background-position: center; filter: brightness(70%);"></div>
+
+  <!-- Content Section -->
+  <div class="container position-relative d-flex justify-content-center align-items-center" style="min-height: 100vh; z-index: 1;">
+    <div class="bg-white p-4 rounded shadow-lg" style="max-width: 600px; width: 100%; opacity: 0.95;">
+      <h2 class="text-center mb-4 text-primary">Contact Us</h2>
+      <form action="{% url 'contact' %}" method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="name" class="form-label">Your Name</label>
+          <input type="text" name="name" class="form-control" id="name" placeholder="Enter your name" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Your Email</label>
+          <input type="email" name="email" class="form-control" id="email" placeholder="Enter your email" required>
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Your Message</label>
+          <textarea name="message" class="form-control" id="message" rows="5" placeholder="Enter your message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Send Message</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock containt %}

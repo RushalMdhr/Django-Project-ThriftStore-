@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Esewa Payment{% endblock title %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting to eSewa</title>
+</head>
+<body>
+    <h1>Redirecting to eSewa...</h1>
+    <p>If you are not redirected automatically, click the button below:</p>
+
+    <form id="esewa-form" action="https://esewa.com.np/epay/main" method="POST">
+        <input type="hidden" name="tAmt" value="{{ tAmt }}">
+        <input type="hidden" name="amt" value="{{ amt }}">
+        <input type="hidden" name="txAmt" value="{{ txAmt }}">
+        <input type="hidden" name="psc" value="{{ psc }}">
+        <input type="hidden" name="pdc" value="{{ pdc }}">
+        <input type="hidden" name="scd" value="{{ scd }}">
+        <input type="hidden" name="pid" value="{{ pid }}">
+        <input type="hidden" name="su" value="{{ su }}">
+        <input type="hidden" name="fu" value="{{ fu }}">
+        <button type="submit">Pay with eSewa</button>
+    </form>
+
+    <script>
+        // Automatically submit the form when the page loads
+        document.getElementById("esewa-form").submit();
+    </script>
+</body>
+</html>
+
+
+{% endblock content %}
+
+
+insettings.py
+# Use a flag to toggle between environments
+ESEWA_ENV = "sandbox"  # Change to "production" when deploying
+
+if ESEWA_ENV == "sandbox":
+    ESEWA_MERCHANT_ID = 'EPAYTEST'
+    ESEWA_VERIFY_URL = 'https://uat.esewa.com.np/epay/main'
+    ESEWA_VERIFY_API = 'https://uat.esewa.com.np/epay/transrec'
+else:
+    ESEWA_MERCHANT_ID = 'your_actual_merchant_id'
+    ESEWA_VERIFY_URL = 'https://esewa.com.np/epay/main'
+    ESEWA_VERIFY_API = 'https://esewa.com.np/epay/transrec'
+
+ESEWA_SUCCESS_URL = 'http://127.0.0.1:8000/payment/success/'  # Update with your local testing domain
+ESEWA_FAILURE_URL = 'http://127.0.0.1:8000/payment/failure/'
+

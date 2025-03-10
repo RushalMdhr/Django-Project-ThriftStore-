@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Return Policy - Thrift Store{% endblock title %}
+
+{% block containt %}
+<style>
+    .p{
+        text-align: center;
+    }
+</style>
+<main style="padding: 40px 20px; text-align: left;">
+    <section class="return-policy">
+        <h1 style="font-size: 2em; color: #6C4F37; margin-bottom: 20px;">Return & Exchange Policy - Thrift Store</h1>
+        <p>We understand that sometimes things don't work out. Please read our return & exchange policy below for more details on how we can help.</p>
+
+        <div class="policy-section" style="margin-bottom: 30px;">
+            <h2 style="font-size: 1.5em; color: #6C4F37; margin-bottom: 10px;">Eligibility for Return</h2>
+            <p>Items can be returned within 14 days of purchase. The items must be in the same condition as when they were purchased, with all original tags and packaging intact. If the item is faulty or damaged, we will accept a return or exchange.</p>
+        </div>
+
+        <div class="policy-section" style="margin-bottom: 30px;">
+            <h2 style="font-size: 1.5em; color: #6C4F37; margin-bottom: 10px;">How to Return</h2>
+            <p>To initiate a return, please contact our customer service at <a href="mailto:support@thriftstore.com" style="color: #6C4F37;">support@thriftstore.com</a> with your order details. We will provide you with a return label and instructions for returning your item.</p>
+        </div>
+
+        <div class="policy-section" style="margin-bottom: 30px;">
+            <h2 style="font-size: 1.5em; color: #6C4F37; margin-bottom: 10px;">Refunds</h2>
+            <p>Refunds will be issued to the original payment method within 7-10 business days after the returned item has been received and inspected. Please note that shipping fees are non-refundable.</p>
+        </div>
+
+        <div class="policy-section" style="margin-bottom: 30px;">
+            <h2 style="font-size: 1.5em; color: #6C4F37; margin-bottom: 10px;">Exchanges</h2>
+            <p>If you wish to exchange an item, we will process the exchange as soon as we receive the original item back in the return condition. If the item is out of stock, we will offer a store credit or a full refund.</p>
+        </div>
+
+        <div class="policy-section" style="margin-bottom: 30px;">
+            <h2 style="font-size: 1.5em; color: #6C4F37; margin-bottom: 10px;">Non-Returnable Items</h2>
+            <p>For hygiene reasons, items such as underwear, swimwear, and certain accessories cannot be returned. Additionally, gift cards, sale items, and items marked as final sale are non-returnable.</p>
+        </div>
+    </section>
+</main>
+
+<footer style="background-color: #fff; padding: 20px; text-align: center; box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);">
+    <p>&copy; 2024 Thrift Store | All rights reserved</p>
+</footer>
+
+<script>
+    // Example JavaScript to handle any interactive elements if needed
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log("Thrift Store Return Policy Page Loaded");
+    });
+</script>
+{% endblock containt %}

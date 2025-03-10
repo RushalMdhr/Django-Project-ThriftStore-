@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}
+Update Product
+{% endblock title %}
+{% block containt %}
+<style>
+    #imagePreview {
+        max-width: 200px; /* Set the maximum width to 200px */
+        max-height: 200px; /* Set the maximum height to 200px */
+        object-fit: cover; /* Ensure the image maintains its aspect ratio without stretching */
+    }
+</style>
+{% if product %}
+<div class="container mt-5">
+    <form class="col-6 mx-auto card p-3 shadow-lg" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <legend>Update Your Product</legend>
+            <hr>
+            <div class="upload-container">
+                <div class="form-group">
+                    <label for="exampleInputPassword1" class="form-label">Upload Image</label>
+                    <input name = 'product_image' value="{{product_images.image}}" type="file" id="imageUpload" class="form-control" multiple accept="image/*" />
+                </div>
+            </div>
+            <div class="preview">
+                <h2>Image Preview:</h2>
+                <img id="imagePreview" alt="Image Preview" />
+                <h3 id="previewName"></h3>
+                <p id="previewDetails"></p>
+            </div>
+
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Name</label>
+                <input type="text" class="form-control" name="product_name" value="{{product.product_name}}"  placeholder="item_name" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Image Description</label>
+                <textarea class="form-control" required value="" name="product_description">{{product.product_description}}</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Price</label>
+                <input type="number"  class="form-control" value="{{product.product_price}}" name="product_price"  placeholder="Price" id="exampleInputEmail1" aria-describedby="emailHelp" min="1" max="999999">
+            </div>
+            <div class="mb-3">
+                <label for="exampleSelect1" class="form-label mt-4">select condition</label>
+                <select class="form-select" value="{{product.condition}}" id="exampleSelect1" name="cond">
+                    <option value="1"{% if product.product_rating == 1 %}selected{% endif %}>New</option>
+                    <option value="2"{% if product.product_rating == 2 %}selected{% endif %}>Excelent</option>
+                    <option value="3"{% if product.product_rating == 3 %}selected{% endif %}>Good</option>
+                    <option value="4"{% if product.product_rating == 4 %}selected{% endif %}>Fair</option>
+                    <option value="5"{% if product.product_rating == 5 %}selected{% endif %}>Poor</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="exampleSelect1" class="form-label mt-4">Category</label>
+                <select class="form-select" id="exampleSelect1" name="categories">
+                    {% for x in categories %}
+                        <option value="{{x.category_name}}" {% if product.category.category_name == x.category_name %}selected{% endif %}>-{{x.category_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="hidden" name="product_id" value="{{product.id}}">
+            <button type="submit" class="btn btn-success">Save</button>
+        </div>
+    </form>
+    <div class="d-grid gap-2 col-6 mx-auto mt-3">
+        <form method="post" action="{% url 'delete_product' product.id %}" onsubmit="return confirmDelete();">
+            {% csrf_token %}
+            <button type="submit"  class="btn btn-danger">DELETE</button>
+        </form>
+    </div>
+</div>
+{% else %}
+<h1>NO PRODUCT AVAILABLE</h1>
+{% endif %}
+
+<script>
+
+function confirmDelete() {
+        return confirm("Are you sure you want to delete this product? This action cannot be undone.");
+    }
+
+    document.getElementById('imageUpload').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.querySelector('.preview');
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    document.getElementById('itemName').addEventListener('input', function() {
+        const previewName = document.getElementById('previewName');
+        previewName.textContent = this.value;
+    });
+
+    document.getElementById('itemDetails').addEventListener('input', function() {
+        const previewDetails = document.getElementById('previewDetails');
+        previewDetails.textContent = this.value;
+    });
+
+    function filterCategories() {
+    const search = document.getElementById('categorySearch').value.toLowerCase();
+    const options = document.getElementById('categories').options;
+
+    for (const option of options) {
+      option.style.display = option.text.toLowerCase().includes(search) ? '' : 'none';
+    }
+  }
+</script>
+{% endblock containt %}

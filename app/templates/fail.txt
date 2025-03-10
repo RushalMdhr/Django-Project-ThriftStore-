@@ -1,0 +1,66 @@
+
+mumucode1
+{% if x.user %}
+        <h6 style="color: red;">By : {{x.user.username}}</h6>
+    {% else %}
+        <h6 style="color: red;">By : NONE</h6>
+    {% endif %}
+
+mumucode2
+    <br>
+{% for x in image_details %}
+
+    <img src="media/{{x.product_image}}" alt="Image" style="height: 200px;">
+        <h3>{{x.product_name}}</h3>
+        <h6 style="color: red;">By : {{x.created_by}}</h6>
+
+    
+    <h5 style='color:tomato'>Rs.{{x.product_price}}</h5>
+    <h6>conditon : {{x.product_rating}}</h6>
+    
+
+
+{% endfor %}
+<div class="w3-panel w3-border w3-round-xxlarge">
+    <p>I have xxlarge rounded borders.</p>
+  </div>
+<hr>
+<h1>now to the end</h1>
+
+mumucode3
+      <nav>
+        <a class="logo" href="#"><i class="fab fa-pinterest"></i> </a>
+        <a  href="/"v class="active">Home</a>
+        <a  href="/"v class="active">Exploar</a>
+        <a  href="/"v class="active">Home</a>
+        <ul> 
+          <li>
+            <a href="/">Home</a>
+          </li> 
+          <li>
+            <a href="selling">Start Selling</a>
+          </li> 
+        </ul> 
+        <div class="search-bar"> 
+          <input type="text" placeholder="Search..."> 
+        </div> <!-- For a logged-in user, show the profile image --> 
+
+        <div class="container-fluid">
+          <a href="login"><button>login</button></a></h3>
+        <form class="d-flex" role="search">
+            {% if request.user.is_authenticated %}
+            <h6 style="color: tomato;">{{username}}</h6>
+          <img src="" alt="Profile Image">
+          <a href="/logout" class="btn btn-outline-danger" type="submit">logout</a>
+            {% else %}
+          <a href="/login" class="btn btn-outline-success" type="submit">login</a>
+          {% endif %}
+        </form>
+      </div>
+      </nav>
+
+
+        # paginator = Paginator(image_details, 10)  # Show 25 contacts per page.
+    # page_number = request.GET.get("page",1)
+    # page_obj = paginator.get_page(page_number)
+    # print(page_obj)

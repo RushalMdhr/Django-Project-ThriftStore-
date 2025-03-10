@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block containt %}
+{% load mathfilters %}
+<div class="container mt-5">
+    <h2 class="mb-4">Recent Orders</h2>
+    <table class="table table-bordered table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Ordered_SN</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for orderby in ordersby %}
+            {% for order in orderby.ordered_set.all %}
+                <tr>
+                    {% if forloop.first %}
+                        <td rowspan="{{ orderby.ordered_set.count }}">
+                           <p class="text-info">({{ forloop.parentloop.counter }}) {{orderby.date}}</p>
+                           <p class="text-info">address: {{orderby.address}} </p>
+
+                        </td>
+                    {% endif %}
+                    <td>
+                        <a href="{% url 'product_overview' order.product.id %}" style="text-decoration: none;">
+                            {{ order.product.product_name }}
+                        </a>
+                    </td>
+                    <td>{{ order.quantity }}</td>
+                    <td>Rs. {{ order.quantity|mul:order.product.product_price }}</td>
+                    {% if forloop.first %}
+                        <td rowspan="">{{ orderby.total}}</td>
+                        <td rowspan="{{ orderby.ordered_set.count }}">{{ orderby.process|yesno:"✅,❌" }}</td>
+                        <td rowspan="{{ orderby.ordered_set.count }}">
+                            {% if orderby.process == False %}
+                                {% if orderby.can_cancel %}
+                                <form method="post" action="">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm" name="id" value="{{ orderby.id }}">Cancel Order</button>
+                                </form>
+                                {% else%}
+                                    <h3>on process</h3> 
+                                {% endif %} 
+                            {% else %}
+                                <h3>Order Placed</h3>
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

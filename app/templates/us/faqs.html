@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% block title %}
+FAQs
+{% endblock title %}
+{% block containt %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQs</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #fff;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    header h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .faq-container {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 1000px;
+    }
+
+    .faq-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #444;
+   
+
+    }
+
+    .faq {
+      margin-bottom: 15px;
+    }
+
+    .faq h3 {
+      font-size: 18px;
+      cursor: pointer;
+      margin: 0;
+      padding: 15px;
+      background: #f7f7f7;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+
+    .faq h3:hover {
+      background: #e9e9e9;
+    }
+
+    .faq p {
+      display: none;
+      margin: 0;
+      padding: 15px;
+      border-left: 3px solid #e91e63;
+      background: #fafafa;
+      color: #555;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+
+    .faq.active p {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .footer {
+      background-color: #24262b;
+      color: #bbbbbb;
+      text-align: center;
+      padding: 20px;
+      margin-top: 30px;
+    }
+
+    .footer a {
+      color: #e91e63;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<section class="faq-container">
+  <h2>Frequently Asked Questions</h2>
+
+  <article class="faq">
+    <h3 tabindex="0" aria-expanded="false">When can I expect my order to arrive?</h3>
+    <p>Each gown is crafted to order. Delivery typically takes 3–8 weeks, including production, handling, and shipping. During high-volume events, there may be delays.</p>
+  </article>
+
+  <article class="faq">
+    <h3 tabindex="0" aria-expanded="false">Is there an option for expedited delivery?</h3>
+    <p>Some dresses are available with expedited shipping. Choose the desired shipping option during checkout.</p>
+  </article>
+
+  <article class="faq">
+    <h3 tabindex="0" aria-expanded="false">Which delivery service do you use?</h3>
+    <p>We dispatch products globally via DHL Express courier service.</p>
+  </article>
+
+  <article class="faq">
+    <h3 tabindex="0" aria-expanded="false">Are import taxes and duties included?</h3>
+    <p>Customs duties depend on your country's regulations. These fees are collected by DHL and are not included in the product price.</p>
+  </article>
+
+  <article class="faq">
+    <h3 tabindex="0" aria-expanded="false">How can I contact you about my order?</h3>
+    <p>You can reach us by email at budhathokimalika@gmail.com. We’ll respond as soon as possible.</p>
+  </article>
+
+  <article class="faq">
+    <h3 tabindex="0" aria-expanded="false">What is the return policy?</h3>
+    <p>We accept returns for unworn, standard-size items within 7 days of delivery. Customized items are non-refundable. Shipping charges are non-refundable.</p>
+  </article>
+
+  <article class="faq">
+    <h3 tabindex="0" aria-expanded="false">Is there a delay for custom size orders?</h3>
+    <p>Custom size and standard gowns take 3–8 weeks for delivery, depending on the shipping option selected at checkout.</p>
+  </article>
+</section>
+
+<footer class="footer">
+  <p>&copy; 2025 Thriftसाथी | Designed with <a href="mailto:budhathokimalika@gmail.com">Love</a>.</p>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq h3').forEach(title => {
+    title.addEventListener('click', () => {
+      const faq = title.parentElement;
+      const isOpen = faq.classList.contains('active');
+      document.querySelectorAll('.faq').forEach(f => f.classList.remove('active'));
+      faq.classList.toggle('active', !isOpen);
+      title.setAttribute('aria-expanded', !isOpen);
+    });
+
+    title.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') title.click();
+    });
+  });
+</script>
+
+</body>
+</html>
+{% endblock containt %}

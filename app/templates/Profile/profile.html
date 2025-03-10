@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    User Profile
+{% endblock title %}
+
+{% block containt %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Main Profile Details -->
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h2>User Profile</h2>
+                    <span class="badge bg-light text-primary">Details</span>
+                </div>
+                <div class="card-body">
+                    <form id="profileForm" method="POST" action="{% url 'profile' user.id %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Username:</strong></div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="username" id="username" value="{{ userprofile.user.username }}" disabled>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Email:</strong></div>
+                            <div class="col-md-8">
+                                <input type="email" class="form-control" name="email" id="email" value="{{ userprofile.user.email }}" readonly>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>First Name:</strong></div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="first_name" id="first_name" value="{{ userprofile.user.first_name }}" disabled>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>Last Name:</strong></div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="last_name" id="last_name" value="{{ userprofile.user.last_name }}" disabled>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4"><strong>ADDRESS:</strong></div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="address" id="address" value="{{userprofile.address}}" disabled>
+                            </div>
+                        </div>
+                        
+                        <input name="profile_picture" id="profilePictureInput" type="file" class="form-control d-none">
+
+                        {% if userprofile.user == user %}
+                        <div class="d-flex justify-content-end">
+                            <button type="button" id="editButton" class="btn btn-primary me-2">Edit Profile</button>
+                            <button type="submit" id="saveButton" class="btn btn-success d-none">Save Changes</button>
+                            <button type="button" id="cancelButton" class="btn btn-danger d-none">Cancel</button>
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Profile Picture -->
+        <div class="col-lg-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <div class="profile-image-container" style="position: relative; display: inline-block;">
+                        <img src="/media/{{ userprofile.profile_pic }}" id="profilePicture"
+                             alt="User Profile Picture" 
+                             class="img-thumbnail rounded-circle" 
+                             style="width: 150px; height: 150px; object-fit: cover;">
+                    </div>
+                    <h5 class="card-title">{{ userprofile.user.username }}</h5>
+                    <p class="text-muted">{{ userprofile.user.email }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // JavaScript for enabling edit mode
+    const editButton = document.getElementById('editButton');
+    const saveButton = document.getElementById('saveButton');
+    const cancelButton = document.getElementById('cancelButton');
+    const inputs = document.querySelectorAll('#profileForm input');
+
+    editButton.addEventListener('click', () => {
+        inputs.forEach(input => input.removeAttribute('disabled'));
+        editButton.classList.add('d-none');
+        saveButton.classList.remove('d-none');
+        cancelButton.classList.remove('d-none');
+        document.getElementById('profilePictureInput').classList.remove('d-none');
+    });
+
+    cancelButton.addEventListener('click', () => {
+        inputs.forEach(input => input.setAttribute('disabled', 'true'));
+        editButton.classList.remove('d-none');
+        saveButton.classList.add('d-none');
+        cancelButton.classList.add('d-none');
+        document.getElementById('profilePictureInput').classList.add('d-none');
+    });
+</script>
+{% endblock containt %}
